@@ -40,18 +40,36 @@ button:hover{background:var(--green-dark)!important}
 
 select{color:#17251d!important;color-scheme:light}
 select:disabled{opacity:1}
-.discount-icon{
-  width:100px;
-  height:80px;
-  object-fit:contain;
-  display:block;
-  margin:0 auto 6px;
+.mode{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
 }
+
+.expire-icon,
+.discount-icon{
+  width:80px;
+  height:80px;
+  flex:0 0 80px;
+  object-fit:contain;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 18px;
+}
+
 .expire-icon{
-  font-size:50px;
+  font-size:75px;
   line-height:1;
+}
+
+.mode-label{
   display:block;
-  margin-bottom:6px;
+  font-size:24px;
+  font-weight:600;
+  line-height:1.35;
+  text-align:center;
 }
 </style>
 </head>
@@ -62,8 +80,14 @@ select:disabled{opacity:1}
 <section class="card">
 <label>เลือกประเภทการตรวจสอบ</label>
 <div class="mode-grid">
-<button id="modeExpire" class="mode active" type="button"><span class="expire-icon">🔍</span><br>วันหมดอายุ</button>
-<button id="modeDiscount" class="mode" type="button"><img src="discount-20-transparent.PNG" class="discount-icon" alt="20%"><br>เงื่อนไขการลดราคา</button>
+<button id="modeExpire" class="mode active" type="button">
+  <span class="expire-icon">🔍</span>
+  <span class="mode-label">วันหมดอายุ</span>
+</button>
+<button id="modeDiscount" class="mode" type="button">
+  <img src="discount-20-transparent.png" class="discount-icon" alt="20%">
+  <span class="mode-label">เงื่อนไขการลดราคา</span>
+</button>
 </div>
 </section>
 
