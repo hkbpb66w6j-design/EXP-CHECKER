@@ -413,32 +413,69 @@ select:disabled{opacity:1}
         icon="🟢"; title="ยังไม่หมดอายุ";
         detail=`เหลืออายุ ${diff} วัน`; cls="green";
       }
-    } else {
-      const r = rules[$("group").value];
-      const start = Math.max(1, Number(r.limit)-1);
-      const remove = Number(rules.removeBefore);
+   } else {
+  const r = rules[$("group").value];
+  const discountDays = Number(r.limit);
+  const remove = Number(rules.removeBefore);
 
-      if (diff <= 0) {
-        icon="🔴";
-        title=diff===0 ? "หมดอายุวันนี้" : "หมดอายุแล้ว";
-        detail=diff===0
-          ? "ห้ามจำหน่าย / ต้องนำออกแล้ว"
-          : `หมดอายุมาแล้ว ${Math.abs(diff)} วัน`;
-        cls="red";
-      } else if (diff <= start) {
-        icon="🟢";
-        title="สามารถลดราคา 20% ได้";
-        detail=diff===remove
-          ? `${removeText} — วันนี้ยังลดราคาได้`
-          : `เหลือ ${diff} วันก่อน EXP — อยู่ในช่วงลดราคา ${r.limit} วันสุดท้าย (รวมวัน EXP)<br>${removeText}`;
-        cls="green";
-      } else {
-        icon="🟡";
-        title="ยังไม่ถึงวันที่ลดราคา";
-        detail=`เหลือ ${diff} วันก่อน EXP — จะเริ่มลดเมื่อเหลือ ${start} วันก่อน EXP`;
-        cls="yellow";
-      }
-    }
+  if (diff < 0) {
+
+    icon = "🔴";
+    title = "หมดอายุแล้ว";
+    detail = `หมดอายุมาแล้ว ${Math.abs(diff)} วัน`;
+    cls = "red";
+
+  } else if (diff === 0) {
+
+    icon = "🔴";
+    title = "ต้องนำออก / หมดอายุ";
+    detail = "วันนี้เป็นวันหมดอายุ — ห้ามจำหน่าย";
+    cls = "red";
+
+  } else if (diff <= discountDays - 1) {
+
+    icon = "🟢";
+    title = "สามารถลดราคา 20% ได้";
+
+    const discountStart = new Date(expDate.getTime());
+    discountStart.setUTCDate(
+      discountStart.getUTCDate() - (discountDays - 1)
+    );
+
+    const discountStartText =
+      `${pad(discountStart.getUTCDate())}/` +
+      `${pad(discountStart.getUTCMonth() + 1)}/` +
+      `${discountStart.getUTCFullYear()}`;
+
+    detail =
+      `เริ่มลดราคา 20%: <strong>${discountStartText}</strong><br>` +
+      `เหลือ ${diff} วันก่อน EXP<br>` +
+      `${removeText}`;
+
+    cls = "green";
+
+  } else {
+
+    icon = "🟡";
+    title = "ยังไม่ถึงวันที่ลดราคา";
+
+    const discountStart = new Date(expDate.getTime());
+    discountStart.setUTCDate(
+      discountStart.getUTCDate() - (discountDays - 1)
+    );
+
+    const discountStartText =
+      `${pad(discountStart.getUTCDate())}/` +
+      `${pad(discountStart.getUTCMonth() + 1)}/` +
+      `${discountStart.getUTCFullYear()}`;
+
+    detail =
+      `เริ่มลดราคา 20%: <strong>${discountStartText}</strong><br>` +
+      `เหลือ ${diff} วันก่อน EXP`;
+
+    cls = "yellow";
+  }
+}
 
     showResult(
       icon,title,detail,cls,
