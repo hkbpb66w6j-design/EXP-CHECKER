@@ -212,10 +212,10 @@ select:disabled{opacity:1}
     return JSON.parse(JSON.stringify(defaults));
   }
 
-  function fillDateSelects(prefix) {
-    const day = $(prefix + "day");
-    const month = $(prefix + "month");
-    const year = $(prefix + "year");
+  function fillDateSelects(dayId, monthId, yearId) {
+    const day = $(dayId);
+    const month = $(monthId);
+    const year = $(yearId);
 
     day.innerHTML = Array.from(
       {length:31},
@@ -484,8 +484,8 @@ select:disabled{opacity:1}
   }
 
   // Initialize
-  fillDateSelects("");
-  fillDateSelects("bio");
+  fillDateSelects("day", "month", "year");
+  fillDateSelects("bioDay", "bioMonth", "bioYear");
 
   $("day").value = String(now.getDate());
   $("month").value = String(now.getMonth()+1);
